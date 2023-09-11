@@ -7,3 +7,4 @@ Fault-tolerant computing is a field of computer science and engineering focused 
 [3 - Tutorial of error handling tools](https://github.com/sebaez11/handlers-error)  
 [4 - Application Checkpointing](https://github.com/sebaez11/fault-tolerant-computing/tree/master/EXECUTION%20STATE)  
 [5 - Orthogonal Defect Classification](https://github.com/sebaez11/fault-tolerant-computing/blob/master/orthogonal-defect-classification.pdf)  
+[6 - Parallelism and concurrence](https://github.com/sebaez11/fault-tolerant-computing/tree/master/PARALELISMO)
