@@ -1,5 +1,3 @@
-Of course, here's the revised tutorial with the mention that Ubuntu 20.04 was used, without specifying it as a prerequisite:
-
 # **Tutorial: Real-time Bitcoin Price Tracker with Plotting**
 
 In this tutorial, we will guide you through creating a real-time Bitcoin price tracker in Python. This program fetches Bitcoin prices from Binance, stores them in an SQLite database, and plots a real-time price graph. We'll use the `ccxt` library for cryptocurrency data, `matplotlib` for plotting, and `sqlite3` for database management.
@@ -29,11 +27,14 @@ source bitcoin-tracker-env/bin/activate
 # Install system package for tkinter
 sudo apt-get install python3-tk
 
+# Install system package for sqlite3
+sudo apt-get install sqlite3
+
 # Install Python packages from requirements.txt
 pip install -r requirements.txt
 ```
 
-## **Step 1: Running the Program**
+## **Steps for Running the Program**
 
 1. **Starting Prefect Server:**
 
@@ -63,27 +64,13 @@ pip install -r requirements.txt
 
    The program will start fetching real-time Bitcoin prices, storing them in the database, and plotting a real-time graph. You can adjust the `cron` schedule in the `bitcoin_info` task to control how often the data is updated.
 
-5. **Closing Plot Windows:**
+![Dashboard Prefect](https://lh3.googleusercontent.com/u/2/drive-viewer/AK7aPaDluZWm453udOh_S7_xD38OcSVvM9iksppu88vXR_JO28GRC1-WathlR2tS9toVpmPHOwi06JCNJnWfV9FGJ-lc_rHD=w1848-h976)
+![Logs and plot visualization](https://lh3.googleusercontent.com/u/2/drive-viewer/AK7aPaCmwTs4ptktjMDQW2tLz5cDf2dKRwYqJRqv-iBzoLpDKo3RqtFCCJcl5wH5MN7ftL8M0jxeTOG257QuWg0oxafr_BTX=w1848-h976)
+
+6. **Closing Plot Windows:**
 
    To ensure that the plot windows close before creating new ones, the script uses `plt.close('all')` in the `plot_bitcoin_prices` task.
 
 That's it! You now have a real-time Bitcoin price tracker with dynamic plotting capabilities.
 
 Feel free to customize the program further to suit your needs, such as adjusting the plotting interval or implementing additional features. Happy coding!
-
-## **Requirements File:**
-
-You can create a `requirements.txt` file to specify the Python packages required for this project. Here's an example `requirements.txt` file:
-
-```
-ccxt==1.72.18
-matplotlib==3.7.3
-```
-
-You can use this file to install the required packages using the following command:
-
-```bash
-pip install -r requirements.txt
-```
-
----
