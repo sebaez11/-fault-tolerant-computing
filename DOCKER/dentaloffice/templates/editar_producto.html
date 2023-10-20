@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container text-center">
+    <h2>Editar Producto</h2>
+    <form method="post" class="my-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+    <a href="{% url 'lista_productos' %}" class="btn btn-secondary">Cancelar</a>
+  </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista{% endblock  %}
+
+{% block content %}
+  <h2>Lista de Pacientes</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Dirección</th>
+        <th>Email</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for paciente in pacientes %}
+        <tr>
+          <td>{{ paciente.nombre }}</td>
+          <td>{{ paciente.direccion }}</td>
+          <td>{{ paciente.email }}</td>
+          <td>
+            <a href="{% url 'editar_paciente' paciente.pk %}" class="btn btn-info btn-sm">
+              <i class="fas fa-edit"></i> Editar
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'registrar_paciente' %}" class="btn btn-primary">Registrar Nuevo Paciente</a>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="mt-5">Registrar Compra</h2>
+    <form method="post" class="mt-4">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-check-label" for="status">
+          <input type="checkbox" class="form-check-input" name="status" id="status" /> Status
+        </label>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="producto">Producto:</label>
+          <select class="form-control" name="producto" id="producto">
+            <option value="" disabled selected>Selecciona un producto</option>
+            {% for product in productos %}
+              <option value="{{ product.id }}">{{ product.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="cantidad">Cantidad:</label>
+          <input type="number" class="form-control" name="cantidad" id="cantidad" />
+        </div>
+        <div class="form-group col-md-3">
+          <label>&nbsp;</label>
+          <button type="button" id="agregarProducto" class="btn btn-primary form-control">Agregar Producto</button>
+        </div>
+      </div>
+      <table id="productos" class="table table-bordered mt-3">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <div class="form-group mt-3">
+        <input type="submit" class="btn btn-success" value="Guardar Compra" />
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const agregarProductoBtn = document.getElementById("agregarProducto");
+      const productosTable = document.getElementById("productos").querySelector("tbody");
+      
+      agregarProductoBtn.addEventListener("click", function () {
+        const selectedProducto = document.getElementById("producto");
+        const cantidadInput = document.getElementById("cantidad");
+        const productoId = selectedProducto.value;
+        const productoText = selectedProducto.options[selectedProducto.selectedIndex].text;
+        const cantidad = cantidadInput.value;
+
+        if (productoId && cantidad) {
+          const newRow = productosTable.insertRow(-1);
+          newRow.classList.add("producto");
+          newRow.innerHTML = `
+            <td><input type="hidden" name="productos" value="${productoId}" />${productoText}</td>
+            <td><input type="hidden" name="cantidades" value="${cantidad}" />${cantidad}</td>
+          `;
+        }
+
+        selectedProducto.value = "";
+        cantidadInput.value = "";
+      });
+    });
+  </script>
+</div>
+{% endblock %}

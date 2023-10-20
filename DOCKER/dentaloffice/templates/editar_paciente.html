@@ -1,0 +1,22 @@
+{% extends "base_form_paciente.html" %}
+
+
+    {% block content %}
+    <h2>{% block titulo %}Editar{% endblock %}</h2>
+    <form method="post" class="my-4">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.nombre.id_for_label }}">Nombre:</label>
+            {{ form.nombre }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.direccion.id_for_label }}">Dirección:</label>
+            {{ form.direccion }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">Email:</label>
+            {{ form.email }}
+        </div>
+        <button type="submit" class="btn btn-primary">{% block boton %}Guardar cambios{% endblock %}</button>
+    </form>
+{% endblock %}
