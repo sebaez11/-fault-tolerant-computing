@@ -2,16 +2,24 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 import ccxt
-import sqlite3
+import psycopg2
 import matplotlib.pyplot as plt
-from pathlib import Path
 
-# Define el DAG (Directed Acyclic Graph)
+
+DATABASE_CONFIG = {
+    'dbname': 'bitcoin_prices_db',
+    'user': 'bitcoin_prices_db_user',
+    'password': 'cUNfpIY4ggoehwJ2t5gT0Q95Op59MU58',
+    'host': 'dpg-cktmh9enfb1c73f728m0-a.oregon-postgres.render.com',
+    'port': '5432'  # generalmente es 5432 para PostgreSQL
+}
+
+
 default_args = {
     'owner': 'airflow',
-    'start_date': datetime(2023, 10, 13),
+    'start_date': datetime(2023, 10, 27),
     'retries': 1,
-    'retry_delay': timedelta(minutes=5),
+    'retry_delay': timedelta(minutes=1),
 }
 
 dag = DAG(
@@ -20,7 +28,6 @@ dag = DAG(
     schedule_interval=timedelta(minutes=1),
 )
 
-# Tarea para obtener el precio de Bitcoin
 def get_bitcoin_price():
     exchange = ccxt.binance()
     symbol = 'BTC/USDT'
@@ -34,13 +41,14 @@ get_price_task = PythonOperator(
     dag=dag,
 )
 
-# Tarea para almacenar el precio de Bitcoin en SQLite
+
 def store_bitcoin_price():
     price = get_bitcoin_price()
-    conn = sqlite3.connect("bitcoin_prices.db")
-    cursor = conn.cursor()
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    cursor.execute("INSERT INTO prices (price, timestamp) VALUES (?, ?)", (price, timestamp))
+    conn = psycopg2.connect(**DATABASE_CONFIG)
+    cursor = conn.cursor()
+    cursor.execute("""CREATE TABLE IF NOT EXISTS prices (price TEXT, timestamp TIMESTAMP);""")
+    cursor.execute("INSERT INTO prices (price, timestamp) VALUES (%s, %s)", (price, timestamp))
     conn.commit()
     conn.close()
 
@@ -50,15 +58,14 @@ store_price_task = PythonOperator(
     dag=dag,
 )
 
-# Tarea para generar y mostrar el gráfico
 def plot_bitcoin_prices():
-    conn = sqlite3.connect("bitcoin_prices.db")
+    conn = psycopg2.connect(**DATABASE_CONFIG)
     cursor = conn.cursor()
     cursor.execute("SELECT timestamp, price FROM prices ORDER BY timestamp")
     data = cursor.fetchall()
     conn.close()
     timestamps, prices_text = zip(*data)
-    timestamps = [datetime.strptime(ts, '%Y-%m-%d %H:%M:%S') for ts in timestamps]
+    timestamps = [ts for ts in timestamps]
     prices = [float(price) for price in prices_text]
     sorted_data = sorted(zip(timestamps, prices), key=lambda x: x[0])
     timestamps, prices = zip(*sorted_data)
@@ -68,8 +75,8 @@ def plot_bitcoin_prices():
     plt.ylabel('Precio del Bitcoin (USDT)')
     plt.title('Histórico de Precios del Bitcoin')
     plt.grid()
-    plt.savefig(Path("bitcoin_prices.png"))
-    plt.close()
+    #plt.savefig(Path("bitcoin_prices.png"))
+    plt.show()
 
 plot_price_task = PythonOperator(
     task_id='plot_bitcoin_prices',
@@ -77,7 +84,6 @@ plot_price_task = PythonOperator(
     dag=dag,
 )
 
-# Define el orden de ejecución de las tareas
 get_price_task >> store_price_task >> plot_price_task
 
 if __name__ == "__main__":
