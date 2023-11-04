@@ -8,6 +8,7 @@ Fault-tolerant computing is a field of computer science and engineering focused 
 [4 - Application Checkpointing](https://github.com/sebaez11/fault-tolerant-computing/tree/master/EXECUTION%20STATE)  
 [5 - Orthogonal Defect Classification](https://github.com/sebaez11/fault-tolerant-computing/blob/master/orthogonal-defect-classification.pdf)  
 [6 - Parallelism and concurrence](https://github.com/sebaez11/fault-tolerant-computing/tree/master/PARALELISMO)    
+[7 - Service's Status](https://github.com/sebaez11/fault-tolerant-computing/tree/master/STATUS-SERVICE)  
 [8 - Workflow manager using Prefect](https://github.com/sebaez11/fault-tolerant-computing/tree/master/WORKFLOW-MANAGER)  
 [9 - Airflow](https://github.com/sebaez11/fault-tolerant-computing/tree/master/AIRFLOW)  
 [10 - Example using Docker](https://github.com/sebaez11/fault-tolerant-computing/tree/master/DOCKER)  
